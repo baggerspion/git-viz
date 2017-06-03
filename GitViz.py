@@ -30,7 +30,7 @@ def create_log(file):
     for commit in LOG:
         # Convert the date to a datetime obj
         # Check if this is the longest date
-        commit['date'] = dateutil.parser.parse(commit['date'])
+        commit['date'] = dateutil.parser.parse(commit['date']).date()
 
         # Check if we know the name
         # Check if this is the longest name
