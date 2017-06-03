@@ -47,32 +47,41 @@ def create_log(file):
     NUM_WEEKS = find_week(LOG[-1]['date'])
 
 def draw_viz():
-    """
-    - The height of the image:
-      Two spare blocks (top, bottom) + one block per author
-    - The width of the image:
-      Two spare blocks (left, right) + two spare blocks (after name, date) + one block per week + name + date
-    """
-    forget, padding = FONT.getsize("X")
+    padding         = FONT.getsize("X")[1]
     img_height      = (2 * padding) + (padding * len(AUTHORS))
-    img_width       = (5 * padding) + (padding * NUM_WEEKS) + LONGEST_NAME + LONGEST_DATE
+    img_width       = (6 * padding) + (padding * NUM_WEEKS) + (2 * LONGEST_NAME) + LONGEST_DATE
     im              = Image.new("RGB", (img_width, img_height))
     draw            = ImageDraw.Draw(im, "RGBA")
 
     draw.rectangle([(0, 0), (img_width, img_height)], fill = "#FFFFFF", outline = "#FFFFFF")
 
-    # Draw all the names and first dates
+    # Draw all the names
     for author in AUTHORS:
         draw.text((padding, padding + (padding * AUTHORS.index(author))), author, fill = "black", font = FONT)
-        draw.text(((padding * 2) + LONGEST_NAME, padding + (padding * AUTHORS.index(author))), 
-                  str(DATES[AUTHORS.index(author)]), fill = "black", font = FONT)
+
+    # Draw all the first dates
+    pos = 0
+    for date in DATES:
+        txt_width = FONT.getsize(str(date))[0]
+        week_num = find_week(date)
+        block_x = (padding * 3) + LONGEST_NAME + LONGEST_DATE + (padding * week_num)
+        x_pos = block_x - (txt_width + padding)
+        y_pos = padding + (padding * pos)
+        draw.text((x_pos, y_pos), str(date), fill = "black", font = FONT)
+        pos += 1
 
     # Draw all the blobs
     for commit in LOG:
         week_num = find_week(commit['date'])
-        blockX = (padding * 3) + LONGEST_NAME + LONGEST_DATE + (padding * week_num)
-        blockY = padding + (padding * AUTHORS.index(commit['author_name']))
-        draw.rectangle([(blockX, blockY),(blockX + padding, blockY + padding)], fill = (48, 107, 209, 64))
+        block_x = (padding * 3) + LONGEST_NAME + LONGEST_DATE + (padding * week_num)
+        block_y = padding + (padding * AUTHORS.index(commit['author_name']))
+        draw.rectangle([(block_x, block_y),(block_x + padding, block_y + padding)], fill = (92, 212, 247, 64))
+
+    # Draw the names again
+    for author in AUTHORS:
+        x_pos = img_width - (padding + LONGEST_NAME)
+        y_pos = padding + (padding * AUTHORS.index(author))
+        draw.text((x_pos, y_pos), author, fill = "black", font = FONT)
 
     del draw
     im.save("result.png", "PNG")
