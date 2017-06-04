@@ -60,15 +60,13 @@ def draw_viz():
         draw.text((padding, padding + (padding * AUTHORS.index(author))), author, fill = "black", font = FONT)
 
     # Draw all the first dates
-    pos = 0
-    for date in DATES:
-        txt_width = FONT.getsize(str(date))[0]
-        week_num = find_week(date)
+    for date in range(len(DATES)):
+        txt_width = FONT.getsize(str(DATES[date]))[0]
+        week_num = find_week(DATES[date])
         block_x = (padding * 3) + LONGEST_NAME + LONGEST_DATE + (padding * week_num)
         x_pos = block_x - (txt_width + padding)
-        y_pos = padding + (padding * pos)
-        draw.text((x_pos, y_pos), str(date), fill = "black", font = FONT)
-        pos += 1
+        y_pos = padding + (padding * date)
+        draw.text((x_pos, y_pos), str(DATES[date]), fill = "black", font = FONT)
 
     # Draw all the blobs
     for commit in LOG:
