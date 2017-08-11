@@ -42,7 +42,6 @@ def process_log():
     print("\tsplines = \"true\";")
     print("\toverlap = \"scalexy\";")
     print("\tnode [ style = \"filled\", color = \"#87B09A\", shape = \"circle\", width = \"0.1\", fixedsize = \"true\", label = \"\" ];")
-    print("\t\"Tasha\" [ color = \"darkorange\" ];")
     for count in counts:
         print("\t\"%s\" -- \"%s\" [ weight = \"%s\" ];" %
               (count[0], count[1], counts[count])
