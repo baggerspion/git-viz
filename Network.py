@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import json
 import operator
 import sys
+import LogParse
 
 LOG = []
 FILES = {}
@@ -49,7 +49,6 @@ def process_log():
     print("}")
 
 if __name__ == '__main__':
-    with open(sys.argv[1]) as data_file:
-        LOG = json.load(data_file)
-
+    parser = LogParse.LogParse(sys.argv[1])
+    LOG = parser.get_log()
     process_log()
