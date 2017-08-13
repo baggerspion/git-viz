@@ -4,7 +4,7 @@
 from datetime import timedelta
 from PIL import Image, ImageDraw, ImageFont
 import dateutil.parser
-import json
+import LogParse
 import sys
 
 LOG          = [] # The log as a list of dictionaries
@@ -21,8 +21,8 @@ def find_week(date):
 def create_log(file):
     global LOG, LONGEST_DATE, LONGEST_NAME, NUM_WEEKS
 
-    with open(file) as data_file:    
-        LOG = json.load(data_file) 
+    parser = LogParse.LogParse(sys.argv[1])
+    LOG = parser.get_log()
         
     # Sort into date order
     LOG.sort(key=lambda item:item['date'])
