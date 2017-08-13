@@ -1,7 +1,6 @@
 import json
 import string
-
-from subprocess import check_output
+import subprocess
 
 GIT_COMMIT_FIELDS = ['id', 'author_name', 'author_email', 'date', 'message', 'files']
 GIT_LOG_FORMAT = ['%H', '%an', '%ae', '%ad', '%s']
@@ -14,22 +13,18 @@ class LogParse:
     def get_log(self, date1 = None, date2 = None):
         # Run git-log
         if date1 and date2:
-            log = check_output(
-                ["git", "log", "--git-dir", self._dir, 
-                 "--since", date1,
-                 "--until", date2,
-                 "--date-order", "--reverse", 
-                 "--all", "--date=iso",
-                 "--name-only", "--format=%s" % GIT_LOG_FORMAT])
+            log = subprocess.getoutput(
+                "git --git-dir %s/.git log --since %s --until %s --date-order --reverse --all --date=iso --name-only --pretty=format:%s" % 
+                (self._dir, date1, date2, GIT_LOG_FORMAT)
+                )
         else:
-            log = check_output(
-                ["git", "log", "--git-dir", self._dir, 
-                 "--date-order", "--reverse", 
-                 "--all", "--date=iso",
-                 "--name-only", "--format=%s" % GIT_LOG_FORMAT])
+            log = subprocess.getoutput(
+                "git --git-dir %s/.git log  --date-order --reverse --all --date=iso --name-only --pretty=format:%s" % 
+                (self._dir, GIT_LOG_FORMAT)
+                )
 
         # Process the log into a list
-        log = log.strip('\n\x1e').split("\x1e")
+        log = log.strip("\n\x1e").split("\x1e")
         log = [row.strip().split("\x1f") for row in log]
         log = [dict(zip(GIT_COMMIT_FIELDS, row)) for row in log]
 
