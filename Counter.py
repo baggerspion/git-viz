@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import dateutil.parser
-import json, sys
+import LogParse, sys
 
 if __name__ == '__main__':
     # Read the log data and sort it
-    with open(sys.argv[1]) as data_file:
-        log = json.load(data_file)
+    parser = LogParse.LogParse(sys.argv[1])
+    log = parser.get_log()
     log.sort(key=lambda item:item['date'])
 
     # Parse the dates
