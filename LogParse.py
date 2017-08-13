@@ -19,7 +19,7 @@ class LogParse:
                 )
         else:
             log = subprocess.getoutput(
-                "git --git-dir %s/.git log  --date-order --reverse --all --date=iso --name-only --pretty=format:%s" % 
+                "git --git-dir %s/.git log --date-order --reverse --all --date=iso --name-only --pretty=format:%s" % 
                 (self._dir, GIT_LOG_FORMAT)
                 )
 

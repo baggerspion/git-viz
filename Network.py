@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import LogParse
+import argparse
 import operator
 import sys
 
+from datetime import datetime
 from graphviz import Graph
 
 LOG = []
@@ -58,6 +60,16 @@ def process_log():
     g.render("result")
 
 if __name__ == '__main__':
-    parser = LogParse.LogParse(sys.argv[1])
-    LOG = parser.get_log()
+    # Parse the args before all else
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("path", help = "Path of the Git repostory to process.")
+    arg_parser.add_argument("-f", "--start", help = "Start date")
+    arg_parser.add_argument("-u", "--end", help = "End date")
+    args = arg_parser.parse_args()
+
+    log_parser = LogParse.LogParse(args.path)
+    if not (args.start and args.end):
+        LOG = log_parser.get_log()
+    else:
+        LOG = log_parser.get_log(args.start, args.end)
     process_log()
