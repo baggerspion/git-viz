@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import LogParse
 import operator
 import sys
-import LogParse
+
+from graphviz import Graph
 
 LOG = []
 FILES = {}
@@ -37,16 +39,23 @@ def process_log():
             counts[pair] = 0
         counts[pair] += 1
 
-    # Output the pairs
-    print("graph G {")
-    print("\tsplines = \"true\";")
-    print("\toverlap = \"scalexy\";")
-    print("\tnode [ style = \"filled\", color = \"#87B09A\", shape = \"circle\", width = \"0.1\", fixedsize = \"true\", label = \"\" ];")
+    # Create the graph
+    g = Graph(engine = "neato", format="png")
+    g.graph_attr['splines'] = "true"
+    g.graph_attr['overlap'] = "scalexy"
+    g.node_attr={
+        'style': "filled",
+        'color': "#87B09A", 
+        'shape': "circle", 
+        'width': "0.1", 
+        'fixedsize': "true", 
+        'label': ""
+        }
     for count in counts:
-        print("\t\"%s\" -- \"%s\" [ weight = \"%s\" ];" %
-              (count[0], count[1], counts[count])
-              )
-    print("}")
+        g.edge(count[0], count[1], weight = str(counts[count]))
+
+    # Write it out
+    g.render("result")
 
 if __name__ == '__main__':
     parser = LogParse.LogParse(sys.argv[1])

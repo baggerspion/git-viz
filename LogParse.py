@@ -30,9 +30,12 @@ class LogParse:
 
         # Create a list of the files
         for entry in log:
-            files = entry['files'].strip('\n')
-            files = files.split('\n')
-            entry['files'] = files
+            try:
+                files = entry['files'].strip('\n')
+                files = files.split('\n')
+                entry['files'] = files
+            except KeyError:
+                entry['files'] = []
 
         # Give 'em what we got
         return log
