@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from datetime import timedelta
-from PIL import Image, ImageDraw, ImageFont
+import sys
 import dateutil.parser
 import LogParse
-import sys
 
-LOG          = [] # The log as a list of dictionaries
-AUTHORS      = [] # The list if author names
-DATES        = [] # The first dayes the authors commit
-FONT         = ImageFont.truetype('Library/Fonts/Arial.ttf', 12)
+from PIL import Image, ImageDraw, ImageFont
+
+LOG = []     # The log as a list of dictionaries
+AUTHORS = [] # The list if author names
+DATES = []   # The first dayes the authors commit
+FONT = ImageFont.truetype('Library/Fonts/Arial.ttf', 12)
 LONGEST_NAME = 0
 LONGEST_DATE = 0
-NUM_WEEKS    = 0
+NUM_WEEKS = 0
 
 def find_week(date):
     return int((date - LOG[0]['date']).days / 7)
@@ -21,7 +21,7 @@ def find_week(date):
 def create_log(file):
     global LOG, LONGEST_DATE, LONGEST_NAME, NUM_WEEKS
 
-    parser = LogParse.LogParse(sys.argv[1])
+    parser = LogParse.LogParse(file)
     LOG = parser.get_log()
         
     # Sort into date order
