@@ -23,7 +23,7 @@ def create_log(file):
 
     parser = LogParse.LogParse(file)
     LOG = parser.get_log()
-        
+
     # Sort into date order
     LOG.sort(key=lambda item:item['date'])
 
@@ -47,11 +47,11 @@ def create_log(file):
     NUM_WEEKS = find_week(LOG[-1]['date'])
 
 def draw_viz():
-    padding         = FONT.getsize("X")[1]
-    img_height      = (2 * padding) + (padding * len(AUTHORS))
-    img_width       = (6 * padding) + (padding * NUM_WEEKS) + (2 * LONGEST_NAME) + LONGEST_DATE
-    im              = Image.new("RGB", (img_width, img_height))
-    draw            = ImageDraw.Draw(im, "RGBA")
+    padding = FONT.getsize("X")[1]
+    img_height = (2 * padding) + (padding * len(AUTHORS))
+    img_width = (6 * padding) + (padding * NUM_WEEKS) + (2 * LONGEST_NAME) + LONGEST_DATE
+    im = Image.new("RGB", (img_width, img_height))
+    draw = ImageDraw.Draw(im, "RGBA")
 
     draw.rectangle([(0, 0), (img_width, img_height)], fill = "#FFFFFF", outline = "#FFFFFF")
 
