@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import argparse
 import sys
 import dateutil.parser
 import LogParse
@@ -18,11 +19,8 @@ NUM_WEEKS = 0
 def find_week(date):
     return int((date - LOG[0]['date']).days / 7)
 
-def create_log(file):
-    global LOG, LONGEST_DATE, LONGEST_NAME, NUM_WEEKS
-
-    parser = LogParse.LogParse(file)
-    LOG = parser.get_log()
+def process_log():
+    global LONGEST_DATE, LONGEST_NAME, NUM_WEEKS
 
     # Sort into date order
     LOG.sort(key=lambda item:item['date'])
@@ -85,5 +83,18 @@ def draw_viz():
     im.save("result.png", "PNG")
 
 if __name__ == "__main__":
-    create_log(sys.argv[1])
+    # Parse the args before all else
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("path", help = "Path of the Git repostory to process.")
+    arg_parser.add_argument("-f", "--start", help = "Start date")
+    arg_parser.add_argument("-u", "--end", help = "End date")
+    args = arg_parser.parse_args()
+
+    log_parser = LogParse.LogParse(args.path)
+    if not (args.start and args.end):
+        LOG = log_parser.get_log()
+    else:
+        LOG = log_parser.get_log(args.start, args.end)
+
+    process_log()
     draw_viz()
