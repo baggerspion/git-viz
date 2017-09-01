@@ -19,15 +19,8 @@ suite of tools. For this purpose I advise using Homebrew to OSX users:
 `brew install graphviz`
 
 ## Running the Scripts
-### Network.py
-
-Network requires you to provide a path to a checked-out Git repo.
+The scripts require you to provide a path to a checked-out Git repo.
 In addition you can provide "from" and "until" dates.
 
 e.g. `Network.py <path> -f 2017-01-01 -u 2017-03-31`
-
-### GitViz.py
-
-GitViz requires you to provide a path to a checked-out Git repo.
-
-e.g. `GitViz.py <path>`
+e.g. `GitViz.py <path> -f 2017-01-01 -u 2017-03-31`
